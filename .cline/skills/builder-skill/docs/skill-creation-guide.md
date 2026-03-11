@@ -46,7 +46,8 @@ cline skill, 스킬변환, convert skill, skill builder
 | SKILL.md | 필수 | 진입점, 라우팅, 핵심 절차 |
 | docs/guide.md | 복잡한 경우 | 상세 단계별 가이드 |
 | docs/reference.md | API/규칙 있을 경우 | 형식 명세, 제약사항 |
-| templates/example | 보일러플레이트 있을 경우 | 복사하여 쓸 파일 |
+| scripts/helper.py | 실행 스크립트 있을 경우 | Cline이 execute_command로 실행하는 스크립트 |
+| templates/example | 복사용 보일러플레이트 있을 경우 | 사용자가 직접 복사하는 파일 |
 
 ---
 
@@ -180,17 +181,71 @@ SKILL.md 상단(제목 바로 아래)에 라우팅 테이블을 배치합니다.
 
 ---
 
-## Phase 4: templates/ 작성
+## Phase 4: scripts/ 작성
 
 ### 4-1. 포함 기준
 
-다음 조건에 해당하면 templates/에 파일을 추가합니다.
+다음 조건에 해당하면 scripts/에 파일을 추가합니다.
 
-- 사용자가 그대로 복사하여 사용할 수 있는 파일
-- 반복적으로 사용될 보일러플레이트 코드
-- 설정 파일 예제
+- Cline이 `execute_command`로 실행해야 하는 스크립트
+- 반복 실행이 필요한 자동화 작업
+- 복잡한 파일 처리나 변환 로직
+
+**`scripts/` vs `templates/` 구분:**
+
+| 구분 | 내용 | 사내 예시 |
+| --- | --- | --- |
+| `scripts/` | Cline이 실행하는 스크립트 | `add_slide.py`, `new-skill.sh` |
+| `templates/` | 사용자가 복사하는 파일 | `SKILL.md.template`, `.env.example` |
 
 ### 4-2. 파일 작성 규칙
+
+```python
+# scripts/helper.py
+# 용도: {이 스크립트의 목적}
+# 사용법: python scripts/helper.py {인수}
+#
+# 인수:
+# - {ARG_A}: {설명}
+
+import sys
+
+def main():
+    # ... 실제 로직 ...
+    pass
+
+if __name__ == "__main__":
+    main()
+```
+
+```bash
+#!/bin/bash
+# scripts/setup.sh
+# 용도: {이 스크립트의 목적}
+# 사용법: bash scripts/setup.sh {인수}
+
+set -e
+# ... 실제 로직 ...
+```
+
+### 4-3. SKILL.md에서 scripts/ 참조
+
+```markdown
+**Step N: 스크립트 실행**
+다음 명령어를 실행합니다:
+```bash
+python .cline/skills/{스킬명}/scripts/helper.py {인수}
+```
+실행 결과를 확인하고 오류가 있으면 수정합니다.
+```
+
+---
+
+## Phase 4-1: templates/ 작성 (선택)
+
+templates/는 사용자가 직접 복사하여 쓰는 보일러플레이트 파일에 사용합니다.
+
+### 파일 작성 규칙
 
 ```python
 # templates/example.py
@@ -232,7 +287,17 @@ SKILL.md 상단(제목 바로 아래)에 라우팅 테이블을 배치합니다.
 
 - [ ] 파일명이 내용을 명확히 반영하는가?
 
-### templates/ 검증
+### scripts/ 검증
+
+- [ ] 파일 상단에 용도와 사용법 주석이 있는가?
+
+- [ ] 스크립트가 독립 실행 가능한가?
+
+- [ ] 실행 권한이 부여되었는가? (`.sh` 파일의 경우 `chmod +x`)
+
+- [ ] SKILL.md에서 올바른 실행 경로로 참조되는가?
+
+### templates/ 검증 (해당 시)
 
 - [ ] 파일 상단에 용도 주석이 있는가?
 
@@ -254,9 +319,21 @@ SKILL.md 상단(제목 바로 아래)에 라우팅 테이블을 배치합니다.
 
 새 스킬 생성 시 실행할 명령어 순서입니다.
 
+**방법 1: 스크립트 사용 (권장)**
+
 ```bash
-# 1. 디렉토리 생성
+# builder-skill 스크립트로 표준 구조 자동 생성
+bash .cline/skills/builder-skill/scripts/new-skill.sh {스킬명}
+```
+
+**방법 2: 수동 생성**
+
+```bash
+# 1. 디렉토리 생성 (프로젝트 규약: docs + scripts)
 mkdir -p .cline/skills/{스킬명}/docs
+mkdir -p .cline/skills/{스킬명}/scripts
+
+# 필요한 경우 templates/ 추가
 mkdir -p .cline/skills/{스킬명}/templates
 
 # 2. SKILL.md 템플릿 복사 (이 스킬의 templates에서)

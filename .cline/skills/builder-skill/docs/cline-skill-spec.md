@@ -14,10 +14,20 @@ Cline 스킬의 공식 구조와 규칙을 정의합니다.
 ├── docs/                 ← 상세 가이드 문서 (선택)
 │   ├── topic-a.md
 │   └── topic-b.md
-└── templates/            ← 재사용 가능한 파일 (선택)
+├── scripts/              ← 실행 가능한 유틸리티 스크립트 (선택)
+│   ├── helper.py
+│   └── setup.sh
+└── templates/            ← 복사하여 쓰는 보일러플레이트 파일 (선택)
     ├── example.py
     └── config.example
 ```
+
+> **프로젝트 규약**: 이 프로젝트에서는 `docs/` + `scripts/` 구조를 기본으로 사용합니다.
+>
+> | 폴더 | 내용 | 사용 예 |
+> | --- | --- | --- |
+> | `scripts/` | Cline이 `execute_command`로 실행하는 스크립트 | `add_slide.py`, `setup.sh` |
+> | `templates/` | 사용자가 복사하여 쓰는 파일 | `SKILL.md.template`, `.env.example` |
 
 ### 명명 규칙
 
@@ -109,11 +119,47 @@ Cline은 이 경로를 읽어 해당 파일을 로드합니다.
 
 ---
 
-## 4. templates/ 폴더
+## 4. scripts/ 폴더
 
 ### 목적
 
-사용자가 복사하여 바로 사용할 수 있는 파일 템플릿을 저장합니다.
+Cline이 `execute_command`로 실행하는 유틸리티 스크립트를 저장합니다.
+
+### 언제 사용하는가
+
+- 반복 실행이 필요한 자동화 작업이 있을 때
+- 복잡한 파일 처리나 변환 로직이 있을 때
+- 스킬 사용 시 Cline이 실행해야 할 스크립트가 있을 때
+
+### 파일 유형 예시
+
+- `.py`: Python 유틸리티 스크립트 (예: `add_slide.py`, `new-skill.sh`)
+- `.sh`: Shell 스크립트
+
+### 콘텐츠 가이드라인
+
+- 파일 상단에 용도와 사용법 주석 포함 (`# 용도:`, `# 사용법:`)
+- 스크립트는 독립 실행 가능하게 작성
+- `if __name__ == "__main__":` 패턴 사용 (Python)
+- 실행 권한 부여 필요: `chmod +x scripts/*.sh`
+
+### SKILL.md에서 scripts/ 참조 방법
+
+```markdown
+**Step 1: 스크립트 실행**
+다음 명령어를 실행합니다:
+```bash
+python .cline/skills/{스킬명}/scripts/helper.py {인수}
+```
+```
+
+---
+
+## 4-1. templates/ 폴더
+
+### 목적
+
+사용자가 복사하여 바로 사용할 수 있는 파일 템플릿을 저장합니다. `scripts/`와 구분: 실행하는 것은 `scripts/`, 복사하는 것은 `templates/`.
 
 ### 언제 사용하는가
 
@@ -135,7 +181,29 @@ Cline은 이 경로를 읽어 해당 파일을 로드합니다.
 
 ---
 
-## 5. SKILL.md 콘텐츠 모범 사례
+## 5. Cline 공식 도구
+
+Cline이 작업 수행 시 사용하는 공식 도구입니다. 스킬/워크플로우 설계 시 이 도구들을 기반으로 지침을 작성하세요.
+
+자세한 내용: `docs/cline-tools-reference.md`
+
+### 핵심 도구 요약
+
+| 도구 | 용도 |
+| --- | --- |
+| `execute_command` | CLI 명령어/스크립트 실행 |
+| `write_to_file` | 파일 생성 또는 전체 덮어쓰기 |
+| `read_file` | 파일 내용 읽기 |
+| `replace_in_file` | 파일 일부 수정 |
+| `search_files` | 파일 내용 검색 |
+| `list_files` | 디렉토리 목록 조회 |
+| `browser_action` | 브라우저 자동화 |
+| `ask_followup_question` | 사용자에게 질문 |
+| `new_task` | 새 컨텍스트로 전환 |
+
+---
+
+## 6. SKILL.md 콘텐츠 모범 사례
 
 ### 라우팅 테이블 (필수 권장)
 
@@ -187,7 +255,7 @@ Cline은 이 경로를 읽어 해당 파일을 로드합니다.
 
 ---
 
-## 6. 사내 환경 제약사항
+## 7. 사내 환경 제약사항
 
 이 섹션은 이 프로젝트의 사내 Cline 환경에만 해당됩니다.
 
@@ -215,7 +283,7 @@ Cline은 `@https://example.com` 형태로 URL을 참조할 수 있습니다.
 
 ---
 
-## 7. 스킬 품질 기준
+## 8. 스킬 품질 기준
 
 완성된 스킬이 충족해야 할 기준입니다.
 

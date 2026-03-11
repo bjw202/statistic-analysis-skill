@@ -13,8 +13,9 @@
 | 새로운 스킬을 처음부터 만들고 싶다 | `docs/skill-creation-guide.md` |
 | 외부 문서를 Cline 스킬로 변환하고 싶다 | `docs/skill-conversion-guide.md` |
 | Cline 스킬 형식/규칙을 알고 싶다 | `docs/cline-skill-spec.md` |
-| 스킬 구조 예시가 필요하다 | `scripts/skill-structure.md` |
-| SKILL.md 템플릿이 필요하다 | `scripts/SKILL.md.template` |
+| Cline 공식 도구 목록이 필요하다 | `docs/cline-tools-reference.md` |
+| 스킬 구조 예시가 필요하다 | `templates/skill-structure.md` |
+| SKILL.md 템플릿이 필요하다 | `templates/SKILL.md.template` |
 
 ---
 
@@ -23,11 +24,15 @@
 ```
 .cline/skills/{스킬명}/
 ├── SKILL.md              ← 진입점 (필수)
-├── docs/                 ← 상세 가이드 (선택)
+├── docs/                 ← 상세 가이드 문서 (선택)
 │   └── *.md
-└── scriptss/            ← 재사용 가능한 템플릿/코드 (선택)
+├── scripts/              ← 실행 가능한 유틸리티 스크립트 (선택, 프로젝트 규약)
+│   └── *.py / *.sh
+└── templates/            ← 복사하여 쓰는 템플릿 파일 (선택)
     └── *
 ```
+
+> **프로젝트 규약**: 이 프로젝트의 스킬은 `docs/` + `scripts/` 구조를 기본으로 사용합니다. `scripts/`에는 Cline이 `execute_command`로 실행하는 Python/Shell 스크립트를 배치합니다. `templates/`는 사용자가 직접 복사하는 보일러플레이트 파일에 사용합니다.
 
 **SKILL.md 필수 형식:**
 
@@ -53,11 +58,13 @@
 
 - [ ] 2\. 트리거 키워드 10개 이상 작성 (한국어 + 영어)
 
-- [ ] 3\. `scriptss/SKILL.md.template` 복사하여 SKILL.md 초안 작성
+- [ ] 3\. `templates/SKILL.md.template` 복사하여 SKILL.md 초안 작성
 
 - [ ] 4\. docs/ 문서 필요 여부 판단 (복잡하면 분리)
 
-- [ ] 5\. scriptss/ 파일 필요 여부 판단
+- [ ] 5\. scripts/ 파일 필요 여부 판단 (실행 스크립트가 있으면 추가)
+
+- [ ] 5-1. templates/ 파일 필요 여부 판단 (복사용 보일러플레이트가 있으면 추가)
 
 - [ ] 6\. 라우팅 테이블 작성 (어떤 요청 → 어떤 문서)
 
@@ -99,3 +106,5 @@
 
 - Cline 스킬: @https://docs.cline.bot/customization/skills
 - Cline 커스터마이징 개요: @https://docs.cline.bot/customization/overview
+- Cline 워크플로우: @https://docs.cline.bot/customization/workflows
+- Cline 공식 도구: @https://docs.cline.bot/tools-reference/all-cline-tools
