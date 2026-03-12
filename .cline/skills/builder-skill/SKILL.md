@@ -68,9 +68,31 @@
 
 - [ ] 6\. 라우팅 테이블 작성 (어떤 요청 → 어떤 문서)
 
-- [ ] 7\. 검증 체크리스트 확인 (`docs/skill-creation-guide.md` Phase 5)
+- [ ] **7. 각 Step에 Cline 도구명 명기 확인** (도구 미명기 시 발동 안 됨)
+
+- [ ] 8\. 검증 체크리스트 확인 (`docs/skill-creation-guide.md` Phase 5)
 
 자세한 단계별 가이드: `docs/skill-creation-guide.md`
+
+---
+
+## 도구 명기 규칙 (필수)
+
+> **경고**: Cline은 "사용자에게 질문한다"처럼 자연어만 쓰면 `ask_followup_question` 도구가 발동되지 않을 수 있습니다.
+
+각 Step에서 사용할 Cline 도구를 명시적으로 기재하세요:
+
+| 하려는 작업 | 반드시 포함할 문구 |
+| --- | --- |
+| 사용자에게 질문 | `ask_followup_question 도구를 사용하여 질문합니다:` |
+| 파일 생성 | `write_to_file 도구로 생성합니다:` |
+| 파일 읽기 | `read_file 도구로 읽습니다` |
+| 파일 수정 | `replace_in_file 도구로 수정합니다` |
+| 명령어 실행 | `execute_command 도구로 실행합니다:` |
+| 디렉토리 조회 | `list_files 도구로 조회합니다` |
+| 내용 검색 | `search_files 도구로 검색합니다` |
+
+도구별 상세 사용법과 예시: `docs/cline-tools-reference.md`
 
 ---
 

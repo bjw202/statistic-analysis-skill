@@ -185,21 +185,23 @@ python .cline/skills/{스킬명}/scripts/helper.py {인수}
 
 Cline이 작업 수행 시 사용하는 공식 도구입니다. 스킬/워크플로우 설계 시 이 도구들을 기반으로 지침을 작성하세요.
 
-자세한 내용: `docs/cline-tools-reference.md`
+> **핵심 규칙**: "사용자에게 질문한다"처럼 자연어만 쓰면 도구가 발동되지 않을 수 있습니다. 도구 이름을 명시적으로 기재해야 발동이 보장됩니다.
 
-### 핵심 도구 요약
+자세한 내용 및 발동 보장 패턴: `docs/cline-tools-reference.md`
 
-| 도구 | 용도 |
+### 도구 명기 패턴 (발동 보장)
+
+| 도구 | 발동 보장 문구 |
 | --- | --- |
-| `execute_command` | CLI 명령어/스크립트 실행 |
-| `write_to_file` | 파일 생성 또는 전체 덮어쓰기 |
-| `read_file` | 파일 내용 읽기 |
-| `replace_in_file` | 파일 일부 수정 |
-| `search_files` | 파일 내용 검색 |
-| `list_files` | 디렉토리 목록 조회 |
-| `browser_action` | 브라우저 자동화 |
-| `ask_followup_question` | 사용자에게 질문 |
-| `new_task` | 새 컨텍스트로 전환 |
+| `execute_command` | `execute_command 도구로 다음을 실행합니다:` |
+| `write_to_file` | `write_to_file 도구로 {경로} 파일을 생성합니다:` |
+| `read_file` | `read_file 도구로 {경로} 파일을 읽습니다` |
+| `replace_in_file` | `replace_in_file 도구로 {경로} 파일을 수정합니다` |
+| `search_files` | `search_files 도구로 {패턴}을 검색합니다` |
+| `list_files` | `list_files 도구로 {경로}를 조회합니다` |
+| `browser_action` | `browser_action launch로 {URL}을 엽니다` |
+| `ask_followup_question` | `ask_followup_question 도구를 사용하여 질문합니다: "{질문}"` |
+| `new_task` | `new_task 도구를 사용하여 새 컨텍스트로 전환합니다` |
 
 ---
 
